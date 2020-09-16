@@ -1,0 +1,13 @@
+version: '3.4'
+
+services:
+  schoolwebapi:
+    image: ${DOCKER_REGISTRY-}schoolwebapi
+    build:
+      context: .
+      dockerfile: SchoolWebApi/Dockerfile
+  studentclient:
+    image: ${DOCKER_REGISTRY-}studentclient
+    build:
+      context: .
+      dockerfile: StudentClient/Dockerfile
