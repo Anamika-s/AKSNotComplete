@@ -14,9 +14,10 @@ namespace StudentClient.Controllers
         public HttpClient Initial()
         {
             var client = new HttpClient();
-            client.BaseAddress = new Uri("https://localhost:44308/");
-            //  Uri Endpoint = new Uri(Environment.GetEnvironmentVariable("schoolapi"));
-            //client.BaseAddress = Endpoint;
+             Uri Endpoint = new Uri(Environment.GetEnvironmentVariable("API_URL"));
+         //   client.BaseAddress = new Uri("https://localhost:44308/");
+        //     Uri Endpoint = new Uri(Environment.GetEnvironmentVariable("schoolapi"));
+            client.BaseAddress = Endpoint;
             return client;
         }
     }

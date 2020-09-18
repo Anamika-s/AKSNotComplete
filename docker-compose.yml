@@ -1,13 +1,50 @@
 version: '3.4'
 
 services:
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+    container_name: final
+    ports:
+      - 1433:1433
+    environment:
+      SA_PASSWORD: Db_PASSWORD123
+      ACCEPT_EULA: Y
+    volumes:
+      - type: volume
+        source: finaldata
+        target: /var/opt/mssql/datafinal
+
+    restart: always
+
   schoolwebapi:
     image: ${DOCKER_REGISTRY-}schoolwebapi
     build:
       context: .
       dockerfile: SchoolWebApi/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_CONNECTION_STRING=Server=tcp:mssql,1433;Database=SchoolDB;User=sa;Password=Db_PASSWORD123
+    depends_on:
+      - mssql
+    container_name: studentapi
+    ports:
+    - 44308:80
+    restart: always
   studentclient:
     image: ${DOCKER_REGISTRY-}studentclient
     build:
       context: .
       dockerfile: StudentClient/Dockerfile
+    environment:
+      API_URL: http://schoolwebapi/
+    ports:
+      - 44348:80
+    depends_on: 
+      - schoolwebapi
+
+volumes:
+  finaldata:
+
+
+
+
